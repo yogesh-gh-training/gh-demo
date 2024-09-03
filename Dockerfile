@@ -14,10 +14,8 @@ CMD ["./src/app.py"]
 
 FROM builder as dev-envs
 
-RUN <<EOF
-apk update
-apk add git bash
-EOF
+RUN apk update 
+RUN apk add git bash
 
 RUN addgroup -S docker
 RUN adduser -S --shell /bin/bash --ingroup docker vscode
