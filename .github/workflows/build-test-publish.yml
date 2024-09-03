@@ -30,24 +30,24 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    # Build and push Docker image
-    - name: Build Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: false
-        tags: brainupgrade/request-logger:${{ github.sha}}
-        file: Dockerfile-multi
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
-        load: true
+    # # Build and push Docker image
+    # - name: Build Image
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: .
+    #     push: false
+    #     tags: gh-demo/request-logger:${{ github.sha}}
+    #     file: Dockerfile-multi
+    #     cache-from: type=local,src=/tmp/.buildx-cache
+    #     cache-to: type=local,dest=/tmp/.buildx-cache
+    #     load: true
 
-    # Test the deployment
-    - name: Test
-      run: |
-        sudo apt-get update && sudo apt-get install -y curl
-        docker run -d --name logger -p 8080:8080 brainupgrade/request-logger:${{ github.sha}}
-        while ! curl -s http://localhost:8080/health | grep -q "OK"; do sleep 30;curl -s http://localhost:8080/health;exit; done
+    # # Test the deployment
+    # - name: Test
+    #   run: |
+    #     sudo apt-get update && sudo apt-get install -y curl
+    #     docker run -d --name logger -p 8080:8080 gh-demo/request-logger:${{ github.sha}}
+    #     while ! curl -s http://localhost:8080/health | grep -q "OK"; do sleep 30;curl -s http://localhost:8080/health;exit; done
 
     # Build and push Docker image
     - name: Build Image
@@ -55,7 +55,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: brainupgrade/request-logger:${{ github.sha}}
-        file: Dockerfile-multi
+        tags: gh-demo/flask-demo:${{ github.sha}}
+        file: Dockerfile
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
