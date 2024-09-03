@@ -19,9 +19,7 @@ apk update
 apk add git bash
 EOF
 
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
+RUN addgroup -S docker
+RUN adduser -S --shell /bin/bash --ingroup docker vscode
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
