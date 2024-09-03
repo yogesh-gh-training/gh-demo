@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return "Hello, world!"
+    return "Hello"
     # redis.incr('hits')
     # counter = str(redis.get('hits'),'utf-8')
     # return "This webpage has been viewed "+counter+" time(s)"

@@ -7,7 +7,9 @@ COPY requirements/prod.txt /code
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r prod.txt
 
-COPY ./src /code
+EXPOSE 8000
+
+COPY . /code
 
 ENTRYPOINT ["python3"]
 CMD ["./src/app.py"]
