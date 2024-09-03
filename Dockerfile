@@ -5,9 +5,9 @@ WORKDIR /code
 
 COPY requirements/prod.txt /code
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements/prod.txt
+    pip3 install -r prod.txt
 
-COPY . /code
+COPY ./src /code
 
 ENTRYPOINT ["python3"]
 CMD ["./src/app.py"]
