@@ -47,7 +47,7 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y curl
         docker run -d --name gh-demo -p 8000:8000 yrj9920/gh-demo:${{ github.sha}}
-        while ! curl -s http://localhost:8000/ | grep -q "Hello"; do sleep 10;curl -s http://localhost:8000/;exit; done
+        while ! curl -s http://localhost:8000/hello | grep -q "Hello"; do sleep 10;curl -s http://localhost:8000/hello;exit; done
 
     # Build and push Docker image
     - name: Build Image

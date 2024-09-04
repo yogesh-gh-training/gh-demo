@@ -35,6 +35,6 @@ jobs:
         # For instance, using curl to check if the app responds correctly
         NODE_PORT=$(kubectl get svc gh-demo-py-service -o=jsonpath='{.spec.ports[0].nodePort}')
         NODE_IP=$(kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-        curl -s $NODE_IP:$NODE_PORT/
+        curl -s $NODE_IP:$NODE_PORT/hello
 
     
