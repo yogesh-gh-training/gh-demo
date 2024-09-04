@@ -18,7 +18,7 @@ jobs:
         
         - name: Generate Release Notes
           id: releasenotes
-          uses: actions/gtihub-script@v7
+          uses: actions/github-script@v7
           with: 
             script: |
                 const previousTag = '${{ steps.previoustag.outputs.tag }}'
