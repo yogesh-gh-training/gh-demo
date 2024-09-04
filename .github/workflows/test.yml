@@ -13,21 +13,24 @@ on:
 
 # Build and push Docker image
 jobs:
-  - name: Build Image
-    uses: docker/build-push-action@v6
-    with:
-    context: .
-    push: false
-    tags: yrj9920/gh-demo:${{ github.sha}}
-    file: Dockerfile
-    cache-from: ${{github.inputs.cache-from}}
-    cache-to: ${{github.inputs.cache-to}}
-    load: true
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Image
+      uses: docker/build-push-action@v6
+      with:
+       context: .
+       push: false
+       tags: yrj9920/gh-demo:${{ github.sha}}
+       file: Dockerfile
+       cache-from: ${{github.inputs.cache-from}}
+       cache-to: ${{github.inputs.cache-to}}
+       load: true
 
-    # Test the deployment
-  - name: Test
-    if: success()
-    run: |
-      sudo apt-get update && sudo apt-get install -y curl
-      docker run -d --name gh-demo -p 8000:8000 yrj9920/gh-demo:${{ github.sha}}
-      while ! curl -s http://localhost:8000/ | grep -q "Hello"; do sleep 10;curl -s http://localhost:8000/;exit; done
+            # Test the deployment
+    - name: Test
+      if: success()
+      run: |
+        sudo apt-get update && sudo apt-get install -y curl
+        docker run -d --name gh-demo -p 8000:8000 yrj9920/gh-demo:${{ github.sha}}
+        while ! curl -s http://localhost:8000/ | grep -q "Hello"; do sleep 10;curl -s http://localhost:8000/;exit; done
