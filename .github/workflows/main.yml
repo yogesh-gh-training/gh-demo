@@ -8,6 +8,4 @@ on:
 jobs:
   Build-Test-Deploy:
       uses: yogesh-gh-training/gh-demo/.github/workflows/build-test-deploy.yml@main
-      with:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      secrets: inherit
