@@ -2,10 +2,10 @@ name: CICD
 
 on:
   push:
-   branches: [ main ]  
-  workflow_dispatch:  
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   Build-Test-Deploy:
-      uses: yogesh-gh-training/gh-demo/.github/workflows/build-test-deploy.yml@main
-      secrets: inherit
+    uses: yogesh-gh-training/gh-demo/.github/workflows/build-test-deploy.yml@main
+    secrets: inherit
