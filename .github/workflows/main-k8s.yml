@@ -9,7 +9,8 @@ jobs:
   Deploy-K8s-Deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
     
     # Login to DockerHub
     - name: Login to DockerHub
