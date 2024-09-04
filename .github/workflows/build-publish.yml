@@ -33,7 +33,7 @@ jobs:
    
     # Test the deployment
     - name: Tests- Reusable
-      uses: yogesh-gh-training/gh-demo/.github/workflows/test.yml
+      uses: yogesh-gh-training/gh-demo/.github/workflows/test.yml@reusable-wf
       with:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
