@@ -24,8 +24,12 @@ jobs:
 
     # Deploy to KIND Cluster
     - name: Deploy to KIND
+      env:
+        SHA_TAG: ${{vars.GH_DEMO_DOCKER_TAG}}
       run: |
-        kubectl apply -f deployment.yaml
+        echo "Tag: $SHA_TAG"
+        TAG=$SHA_TAG envsubst '${TAG}' < deployment.yaml > final_deployment.yaml
+        kubectl apply -f final_deployment.yaml
 
     # Test the deployment
     - name: Test
