@@ -1,10 +1,17 @@
-name: CICD
+# .github/workflows/build-publish.yml
+name: Tests - Reusable
 
 on:
-  push:
-   branches: [ main ]  
-  workflow_dispatch:  
+  workflow_call:
+    # inputs:
+    #   cache-from:
+    #     required: false
+    #     type: string
+    #   cache-to:
+    #     required: true
+    #     type: string
 
+# Build and push Docker image
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
@@ -29,20 +36,20 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    # Build and push Docker image
+   
+    # Test the deployment
     - name: Build Image
       uses: docker/build-push-action@v6
       with:
-        context: .
-        push: false
-        tags: yrj9920/gh-demo:${{ github.sha}}
-        file: Dockerfile
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
-        load: true
+       context: .
+       push: false
+       tags: yrj9920/gh-demo:${{ github.sha}}
+       file: Dockerfile
+       cache-from: ${{github.inputs.cache-from}}
+       cache-to: ${{github.inputs.cache-to}}
+       load: true
 
-    # Test the deployment
+            # Test the deployment
     - name: Test
       if: success()
       run: |
@@ -61,3 +68,5 @@ jobs:
         file: Dockerfile
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
+ 
+    

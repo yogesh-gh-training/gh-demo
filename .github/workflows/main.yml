@@ -1,0 +1,10 @@
+name: CICD
+
+on:
+  push:
+   branches: [ main ]  
+  workflow_dispatch:  
+
+jobs:
+  Build-Test-Deploy:
+      uses: yogesh-gh-training/gh-demo/.github/workflows/test.yml@main
