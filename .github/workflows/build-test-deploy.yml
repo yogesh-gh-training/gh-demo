@@ -80,14 +80,14 @@ jobs:
       with:
         script: |
           const gh = require('@actions/github');
-          const context = gh.context;
-          const repo = context.repo;
-          const sha = context.sha;
+          const ctx = gh.context;
+          const repo = ctx.repo;
+          const shaVal = ctx.sha;
           await gh.repos.createOrUpdateEnvironment({
             repo: repo.repo,
             environment: {
               variables: {
-                GH_DEMO_DOCKER_TAG: sha
+                GH_DEMO_DOCKER_TAG: shaVal
               }
             }
           });
