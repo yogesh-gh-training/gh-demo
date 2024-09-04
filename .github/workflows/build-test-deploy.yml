@@ -79,11 +79,11 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const github = require('@actions/github');
-          const context = github.context;
+          const gh = require('@actions/github');
+          const context = gh.context;
           const repo = context.repo;
           const sha = context.sha;
-          await github.repos.createOrUpdateEnvironment({
+          await gh.repos.createOrUpdateEnvironment({
             repo: repo.repo,
             environment: {
               variables: {
