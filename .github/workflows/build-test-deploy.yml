@@ -1,10 +1,17 @@
-name: CICD
+# .github/workflows/build-publish.yml
+name: Tests - Reusable
 
 on:
-  push:
-   branches: [ main ]  
-  workflow_dispatch:  
+  workflow_call:
+    # inputs:
+    #   cache-from:
+    #     required: false
+    #     type: string
+    #   cache-to:
+    #     required: true
+    #     type: string
 
+# Build and push Docker image
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
@@ -29,14 +36,26 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
    
     # Test the deployment
-    - name: Tests- Reusable
-      uses: yogesh-gh-training/gh-demo/.github/workflows/test.yml@reusable-wf
+    - name: Build Image
+      uses: docker/build-push-action@v6
       with:
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+       context: .
+       push: false
+       tags: yrj9920/gh-demo:${{ github.sha}}
+       file: Dockerfile
+       cache-from: ${{github.inputs.cache-from}}
+       cache-to: ${{github.inputs.cache-to}}
+       load: true
+
+            # Test the deployment
+    - name: Test
+      if: success()
+      run: |
+        sudo apt-get update && sudo apt-get install -y curl
+        docker run -d --name gh-demo -p 8000:8000 yrj9920/gh-demo:${{ github.sha}}
+        while ! curl -s http://localhost:8000/ | grep -q "Hello"; do sleep 10;curl -s http://localhost:8000/;exit; done
 
     # Build and push Docker image
     - name: Build Image
@@ -49,3 +68,5 @@ jobs:
         file: Dockerfile
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
+ 
+    
