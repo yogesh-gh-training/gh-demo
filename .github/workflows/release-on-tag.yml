@@ -1,4 +1,4 @@
-name: Release on Tag
+name: Release On Tag
 
 on:
   push:
@@ -24,10 +24,10 @@ jobs:
             const previousTag = '${{ steps.previoustag.outputs.tag }}'
             const currenTag = '${{ github.ref_name }}'
             const compare = await github.rest.repos.compareCommits({
-                owner = context.repo.owner,
-                repo = context.repo.repo,
-                base = previousTag,
-                head = currentTag
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: previousTag,
+                head: currentTag
             })
             return compare.data.commits.map(commit => `- ${commit.sha.substring(0, 7)}: ${commit.commit.message}`).join("\n"))
       - name: Create Release
