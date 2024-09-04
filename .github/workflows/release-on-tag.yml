@@ -24,7 +24,7 @@ jobs:
         with:
           script: |
             const previousTag = '${{ steps.previoustag.outputs.tag }}'
-            const currenTag = '${{ github.ref_name }}'
+            const currentTag = '${{ github.ref_name }}'
             const compare = await github.rest.repos.compareCommits({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
