@@ -31,7 +31,7 @@ jobs:
                 base: previousTag,
                 head: currentTag
             })
-            return compare.data.commits.map(commit => `- ${commit.sha.substring(0, 7)}: ${commit.commit.message}`).join("\n"))
+            return compare.data.commits.map(commit => `- ${commit.sha.substring(0, 7)}: ${commit.commit.message}`).join("\n")
       - name: Create Release
         id: createrelease
         uses: actions/create-release@v1
