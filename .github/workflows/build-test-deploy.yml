@@ -1,5 +1,5 @@
 # .github/workflows/build-test-publish.yml
-name: Tests - Reusable
+name: Build-Test-Deploy-Reusable
 
 on:
   workflow_call:
@@ -60,5 +60,37 @@ jobs:
         file: Dockerfile
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
+    
+    # - name: Persist Tag
+    #   env:
+    #     GH_PAT: ${{ secrets.GH_PAT }}
+    #   run: |
+    #       tag=${{ github.sha}}
+    #       echo "New tag: $tag"
+    #       curl -X POST \
+    #         -H "Authorization: token $GH_PAT" \
+    #         -H "Accept: application/vnd.github.v3+json" \
+    #         https://api.github.com/repos/${{ github.repository }}/dispatches \
+    #         -d '{"event_type":"update_variable","client_payload":{"GH_DEMO_DOCKER_TAG":"'"$tag"'"}}'
+
+      # Store current github.sha to repo variable
+    - name: Store SHA in repo variable
+      if: success()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const github = require('@actions/github');
+          const context = github.context;
+          const repo = context.repo;
+          const sha = context.sha;
+          await github.repos.createOrUpdateEnvironment({
+            repo: repo.repo,
+            environment: {
+              variables: {
+                GH_DEMO_DOCKER_TAG: sha
+              }
+            }
+          });
+      
  
     
