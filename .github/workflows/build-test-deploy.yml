@@ -61,36 +61,19 @@ jobs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
     
-    # - name: Persist Tag
-    #   env:
-    #     GH_PAT: ${{ secrets.GH_PAT }}
-    #   run: |
-    #       tag=${{ github.sha}}
-    #       echo "New tag: $tag"
-    #       curl -X POST \
-    #         -H "Authorization: token $GH_PAT" \
-    #         -H "Accept: application/vnd.github.v3+json" \
-    #         https://api.github.com/repos/${{ github.repository }}/dispatches \
-    #         -d '{"event_type":"update_variable","client_payload":{"GH_DEMO_DOCKER_TAG":"'"$tag"'"}}'
-
-      # Store current github.sha to repo variable
     - name: Store SHA in repo variable
       if: success()
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const gh = require('@actions/github');
-          const ctx = gh.context;
-          const repo = ctx.repo;
-          const shaVal = ctx.sha;
-          await gh.repos.createOrUpdateEnvironment({
-            repo: repo.repo,
-            environment: {
-              variables: {
-                GH_DEMO_DOCKER_TAG: shaVal
-              }
-            }
-          });
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+        tag=${{ github.sha}}
+        echo "New tag: $tag"
+        curl -X PATCH \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token $GH_PAT" \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables/GH_DEMO_DOCKER_TAG \
+          -d '{"name":"GH_DEMO_DOCKER_TAG","value":"'"$tag"'"}'
+
       
  
     
