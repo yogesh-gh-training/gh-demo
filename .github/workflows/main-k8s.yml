@@ -1,0 +1,31 @@
+name: CICD-K8s
+
+on:
+  # push:
+  #  branches: [ main ]  
+  workflow_dispatch:  
+
+jobs:
+  Deploy-K8s-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # Set up Kubernetes in Docker (KIND)
+    - name: Create KIND Cluster
+      uses: helm/kind-action@v1
+
+    # Deploy to KIND Cluster
+    - name: Deploy to KIND
+      run: |
+        kubectl apply -f deployment.yaml
+
+    # Test the deployment
+    - name: Test
+      run: |
+        kubectl wait --for=condition=Ready pod -l app=gh-demo-py --timeout=300s
+        # Add commands to test the application
+        # For instance, using curl to check if the app responds correctly
+        NODE_PORT=$(kubectl get svc gh-demo-py-service -o=jsonpath='{.spec.ports[0].nodePort}')
+        NODE_IP=$(kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+        curl -s $NODE_IP:$NODE_PORT/
+
+    
