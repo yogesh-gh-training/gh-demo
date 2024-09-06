@@ -1,1 +1,1 @@
-Init
+Repository for BrainUpgrade training demos
